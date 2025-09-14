@@ -99,8 +99,8 @@ export function CourseSubmissionForm() {
 
   // utility: resolves or creates a state and returns its id
   async function resolveOrCreateStateId(formState: string) {
-    const FETCH_URL = "http://localhost:5000/api/states/get-states"; // your GET endpoint
-    const POST_URL_CREATE_STATE = "http://localhost:5000/api/states/add-state"; // your POST endpoint (adjust if different)
+    const FETCH_URL = "https://student-tool.onrender.com/api/states/get-states"; // your GET endpoint
+    const POST_URL_CREATE_STATE = "https://student-tool.onrender.com/api/states/add-state"; // your POST endpoint (adjust if different)
 
     try {
       // normalize form input
@@ -185,9 +185,9 @@ export function CourseSubmissionForm() {
 
   async function resolveOrCreateInstituteType(formInstituteType: string) {
     const FETCH_URL =
-      "http://localhost:5000/api/institute-types/get-institute-types"; // your GET endpoint
+      "https://student-tool.onrender.com/api/institute-types/get-institute-types"; // your GET endpoint
     const POST_URL_CREATE_INSTITUTE_TYPE =
-      "http://localhost:5000/api/institute-types/add-institute-type"; // your POST endpoint (adjust if different)
+      "https://student-tool.onrender.com/api/institute-types/add-institute-type"; // your POST endpoint (adjust if different)
 
     try {
       // normalize form input
@@ -281,7 +281,7 @@ export function CourseSubmissionForm() {
   }
 
   async function searchExistingCourse(instituteId: string) {
-    const FETCH_COURSES_URL = `http://localhost:5000/api/courses/get-courses-by-institute/${instituteId}`;
+    const FETCH_COURSES_URL = `https://student-tool.onrender.com/api/courses/get-courses-by-institute/${instituteId}`;
     try {
       const res = await axios.get(FETCH_COURSES_URL);
       const coursesArray = Array.isArray(res.data)
@@ -343,7 +343,7 @@ export function CourseSubmissionForm() {
     stateId: string,
     instituteTypeId: string
   ) {
-    const CREATE_INSTITUTE_URL = `http://localhost:5000/api/institutes/add-institute`;
+    const CREATE_INSTITUTE_URL = `https://student-tool.onrender.com/api/institutes/add-institute`;
     try {
       const res = await axios.post(CREATE_INSTITUTE_URL, {
         instName: formInstituteName,
@@ -368,7 +368,7 @@ export function CourseSubmissionForm() {
 
   // Adds a new course
   async function addCourse(institute: string, formCourseName: string) {
-    const ADD_COURSE_URL = `http://localhost:5000/api/courses/add-course`;
+    const ADD_COURSE_URL = `https://student-tool.onrender.com/api/courses/add-course`;
     try {
       await axios.post(ADD_COURSE_URL, {
         course: formCourseName,
@@ -400,7 +400,7 @@ export function CourseSubmissionForm() {
   const handleSubmit = async () => {
     try {
       const fetchInstitutes = await axios.get(
-        "http://localhost:5000/api/institutes/all-institutes"
+        "https://student-tool.onrender.com/api/institutes/all-institutes"
       );
       console.log("Institute data:", fetchInstitutes.data);
 
