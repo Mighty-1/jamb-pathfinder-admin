@@ -15,6 +15,7 @@ export const nigerianStates = [
   "Enugu",
   "FCT - Abuja",
   "Gombe",
+  "Ibadan",
   "Imo",
   "Jigawa",
   "Kaduna",
@@ -39,7 +40,7 @@ export const nigerianStates = [
 ];
 
 export const institutionTypes = [
-  "University",
+  "Public University",
   "Polytechnic",
   "College of Education",
   "College of Technology",
