@@ -470,9 +470,6 @@ export default function AllData() {
                       >
                         <div>
                           <div className="font-medium">{i.name}</div>
-                          <div className="text-sm text-muted-foreground">
-                            id: {i.id}
-                          </div>
                         </div>
                         <div className="flex items-center gap-2">
                           <button
@@ -520,9 +517,6 @@ export default function AllData() {
                       >
                         <div>
                           <div className="font-medium">{c.name}</div>
-                          <div className="text-sm text-muted-foreground">
-                            id: {c.id}
-                          </div>
                         </div>
                         <div className="flex items-center gap-2">
                           <button

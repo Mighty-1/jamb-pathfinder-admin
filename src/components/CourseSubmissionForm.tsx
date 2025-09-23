@@ -99,7 +99,9 @@ export function CourseSubmissionForm() {
 
   // utility: resolves or creates a state and returns its id
   async function resolveOrCreateStateId(formState: string) {
-    const FETCH_URL = "https://student-tool.onrender.com/api/states/get-states"; // your GET endpoint
+    const FETCH_URL = "https://student-tool.onrender.com/api/states/get-states";
+    // const FETCH_URL = "http://localhost:5000/api/states/get-states"; // your GET endpoint
+    // const POST_URL_CREATE_STATE = "http://localhost:5000/api/states/add-state"; // your POST endpoint (adjust if different)
     const POST_URL_CREATE_STATE = "https://student-tool.onrender.com/api/states/add-state"; // your POST endpoint (adjust if different)
 
     try {
@@ -110,7 +112,11 @@ export function CourseSubmissionForm() {
       const formStateLower = formStateTrimmed.toLowerCase();
 
       // 1) fetch all states
-      const fetchState = await axios.get(FETCH_URL);
+      const fetchState = await axios.get(FETCH_URL, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token") || ""}`,
+        },
+      });
       // support responses that return array or wrapped object (defensive)
       const stateArray: any[] = Array.isArray(fetchState.data)
         ? fetchState.data
@@ -140,7 +146,11 @@ export function CourseSubmissionForm() {
       // 4) not found — create it
       // send original-casing name (not lowercased) so DB stores pretty name
       const payload = { state: formStateTrimmed }; // adjust key if backend expects 'name' instead
-      const createRes = await axios.post(POST_URL_CREATE_STATE, payload);
+      const createRes = await axios.post(POST_URL_CREATE_STATE, payload, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token") || ""}`,
+        },
+      });
 
       // backend might return { _id, stateName } or { success: true, data: {...} } etc
       const created = createRes.data;
@@ -185,9 +195,11 @@ export function CourseSubmissionForm() {
 
   async function resolveOrCreateInstituteType(formInstituteType: string) {
     const FETCH_URL =
-      "https://student-tool.onrender.com/api/institute-types/get-institute-types"; // your GET endpoint
+      // "http://localhost:5000/api/institute-types/get-institute-types"; // your GET endpoint
+    "https://student-tool.onrender.com/api/institute-types/get-institute-types"; // your GET endpoint
     const POST_URL_CREATE_INSTITUTE_TYPE =
-      "https://student-tool.onrender.com/api/institute-types/add-institute-type"; // your POST endpoint (adjust if different)
+      // "http://localhost:5000/api/institute-types/add-institute-type"; // your POST endpoint (adjust if different)
+    "https://student-tool.onrender.com/api/institute-types/add-institute-type"; // your POST endpoint (adjust if different)
 
     try {
       // normalize form input
@@ -200,7 +212,11 @@ export function CourseSubmissionForm() {
       const formInstituteTypeLower = formInstituteTypeTrimmed.toLowerCase();
 
       // 1) fetch all institute types
-      const fetchInstituteTypes = await axios.get(FETCH_URL);
+      const fetchInstituteTypes = await axios.get(FETCH_URL, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token") || ""}`,
+        },
+      });
       // support responses that return array or wrapped object (defensive)
       const instituteTypeArray: any[] = Array.isArray(fetchInstituteTypes.data)
         ? fetchInstituteTypes.data
@@ -234,7 +250,12 @@ export function CourseSubmissionForm() {
       const payload = { instName: formInstituteTypeTrimmed }; // adjust key if backend expects 'name' instead
       const createRes = await axios.post(
         POST_URL_CREATE_INSTITUTE_TYPE,
-        payload
+        payload,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token") || ""}`,
+          },
+        }
       );
 
       // backend might return { _id, instName } or { success: true, data: {...} } etc
@@ -282,8 +303,14 @@ export function CourseSubmissionForm() {
 
   async function searchExistingCourse(instituteId: string) {
     const FETCH_COURSES_URL = `https://student-tool.onrender.com/api/courses/get-courses-by-institute/${instituteId}`;
+    // const FETCH_COURSES_URL = `http://localhost:5000/api/courses/get-courses-by-institute/${instituteId}`;
+
     try {
-      const res = await axios.get(FETCH_COURSES_URL);
+      const res = await axios.get(FETCH_COURSES_URL, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token") || ""}`,
+        },
+      });
       const coursesArray = Array.isArray(res.data)
         ? res.data
         : Array.isArray(res.data.course)
@@ -344,12 +371,21 @@ export function CourseSubmissionForm() {
     instituteTypeId: string
   ) {
     const CREATE_INSTITUTE_URL = `https://student-tool.onrender.com/api/institutes/add-institute`;
+    // const CREATE_INSTITUTE_URL = `http://localhost:5000/api/institutes/add-institute`;
     try {
-      const res = await axios.post(CREATE_INSTITUTE_URL, {
-        instName: formInstituteName,
-        state: stateId,
-        type: instituteTypeId,
-      });
+      const res = await axios.post(
+        CREATE_INSTITUTE_URL,
+        {
+          instName: formInstituteName,
+          state: stateId,
+          type: instituteTypeId,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token") || ""}`
+          },
+        }
+      );
       console.log("Created new institute:", res.data && res.data._id);
       return String(res.data._id);
     } catch (err: any) {
@@ -369,15 +405,24 @@ export function CourseSubmissionForm() {
   // Adds a new course
   async function addCourse(institute: string, formCourseName: string) {
     const ADD_COURSE_URL = `https://student-tool.onrender.com/api/courses/add-course`;
+    // const ADD_COURSE_URL = `http://localhost:5000/api/courses/add-course`;
     try {
-      await axios.post(ADD_COURSE_URL, {
-        course: formCourseName,
-        institute: institute,
-        olevelSubjects: formData.olevelSubjects,
-        jambSubjects: formData.jambSubjects,
-        compulsoryJambSubjects: formData.compulsoryJambSubjects,
-        compulsoryOlevelSubjects: formData.compulsoryOlevelSubjects,
-      });
+      await axios.post(
+        ADD_COURSE_URL,
+        {
+          course: formCourseName,
+          institute: institute,
+          olevelSubjects: formData.olevelSubjects,
+          jambSubjects: formData.jambSubjects,
+          compulsoryJambSubjects: formData.compulsoryJambSubjects,
+          compulsoryOlevelSubjects: formData.compulsoryOlevelSubjects,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token") || ""}`,
+          },
+        }
+      );
       console.log("Added course:", formData);
       toast({
         title: "Success",
@@ -400,10 +445,14 @@ export function CourseSubmissionForm() {
   const handleSubmit = async () => {
     try {
       const fetchInstitutes = await axios.get(
-        "https://student-tool.onrender.com/api/institutes/all-institutes"
+        "https://student-tool.onrender.com/api/institutes/all-institutes",
+        // "http://localhost:5000/api/institutes/all-institutes",
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token") || ""}`
+          },
+        }
       );
-      console.log("Institute data:", fetchInstitutes.data);
-
       // normalize top-level payload -> produce an array of course objects
       const raw = fetchInstitutes.data;
       const institutesArray = Array.isArray(raw)
@@ -429,7 +478,6 @@ export function CourseSubmissionForm() {
       );
 
       if (existingInstitute && existingInstitute.id) {
-        console.log("Found existing institute:", existingInstitute);
         await searchExistingCourse(existingInstitute.id);
         return; // stop further processing
       } else {
@@ -513,7 +561,8 @@ export function CourseSubmissionForm() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-accent to-muted p-4">-
+    <div className="min-h-screen bg-gradient-to-br from-accent to-muted p-4">
+      -
       <div className="max-w-2xl mx-auto py-8">
         {/* Header */}
         <div className="text-center mb-8">
