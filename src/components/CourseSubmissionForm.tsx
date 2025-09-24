@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Card,
   CardContent,
@@ -51,6 +52,7 @@ interface FormData {
 }
 
 export function CourseSubmissionForm() {
+  const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState<FormData>({
     institutionName: "",
@@ -102,7 +104,8 @@ export function CourseSubmissionForm() {
     const FETCH_URL = "https://student-tool.onrender.com/api/states/get-states";
     // const FETCH_URL = "http://localhost:5000/api/states/get-states"; // your GET endpoint
     // const POST_URL_CREATE_STATE = "http://localhost:5000/api/states/add-state"; // your POST endpoint (adjust if different)
-    const POST_URL_CREATE_STATE = "https://student-tool.onrender.com/api/states/add-state"; // your POST endpoint (adjust if different)
+    const POST_URL_CREATE_STATE =
+      "https://student-tool.onrender.com/api/states/add-state"; // your POST endpoint (adjust if different)
 
     try {
       // normalize form input
@@ -196,10 +199,10 @@ export function CourseSubmissionForm() {
   async function resolveOrCreateInstituteType(formInstituteType: string) {
     const FETCH_URL =
       // "http://localhost:5000/api/institute-types/get-institute-types"; // your GET endpoint
-    "https://student-tool.onrender.com/api/institute-types/get-institute-types"; // your GET endpoint
+      "https://student-tool.onrender.com/api/institute-types/get-institute-types"; // your GET endpoint
     const POST_URL_CREATE_INSTITUTE_TYPE =
       // "http://localhost:5000/api/institute-types/add-institute-type"; // your POST endpoint (adjust if different)
-    "https://student-tool.onrender.com/api/institute-types/add-institute-type"; // your POST endpoint (adjust if different)
+      "https://student-tool.onrender.com/api/institute-types/add-institute-type"; // your POST endpoint (adjust if different)
 
     try {
       // normalize form input
@@ -337,7 +340,7 @@ export function CourseSubmissionForm() {
         return sameCourse;
       });
 
-      console.log("Duplicate course found:", duplicate);
+      // console.log("Duplicate course found:", duplicate);
 
       if (duplicate) {
         toast({
@@ -382,7 +385,7 @@ export function CourseSubmissionForm() {
         },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token") || ""}`
+            Authorization: `Bearer ${localStorage.getItem("token") || ""}`,
           },
         }
       );
@@ -423,12 +426,13 @@ export function CourseSubmissionForm() {
           },
         }
       );
-      console.log("Added course:", formData);
+      // console.log("Added course:", formData);
       toast({
         title: "Success",
         description: "Course added successfully!",
         variant: "default",
       });
+      navigate("/add-course")
     } catch (err: any) {
       console.error(
         "Error adding course:",
@@ -449,7 +453,7 @@ export function CourseSubmissionForm() {
         // "http://localhost:5000/api/institutes/all-institutes",
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token") || ""}`
+            Authorization: `Bearer ${localStorage.getItem("token") || ""}`,
           },
         }
       );
