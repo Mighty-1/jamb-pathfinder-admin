@@ -10,8 +10,6 @@ import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import ProtectedRoute from "./pages/protectedRoute";
 import { CourseSubmissionForm } from "./components/CourseSubmissionForm";
-// import { DayPickerProvider } from "react-day-picker";
-
 const queryClient = new QueryClient();
 
 const App = () => (

@@ -51,19 +51,19 @@ export const updateCourseSubjects = (id: string, payload: any) =>
 
 // ---- Delete endpoints ----
 export const deleteState = (id: string) =>
-  api.delete(`/states/${encodeURIComponent(id)}`, {
+  api.delete(`/states/delete-state/${encodeURIComponent(id)}`, {
     headers: { Authorization: `Bearer ${localStorage.getItem("token") || ""}` },
   });
 export const deleteInstituteType = (id: string) =>
-  api.delete(`/institute-types/${encodeURIComponent(id)}`, {
+  api.delete(`/institute-types/delete-institute-type/${encodeURIComponent(id)}`, {
     headers: { Authorization: `Bearer ${localStorage.getItem("token") || ""}` },
   });
 export const deleteInstitute = (id: string) =>
-  api.delete(`/institutes/${encodeURIComponent(id)}`, {
+  api.delete(`/institutes/delete-institute/${encodeURIComponent(id)}`, {
     headers: { Authorization: `Bearer ${localStorage.getItem("token") || ""}` },
   });
 export const deleteCourse = (id: string) =>
-  api.delete(`/courses/${encodeURIComponent(id)}`, {
+  api.delete(`/courses/delete/${encodeURIComponent(id)}`, {
     headers: { Authorization: `Bearer ${localStorage.getItem("token") || ""}` },
   });
 export const deleteSubject = (
