@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import {
   Card,
   CardContent,
@@ -52,7 +51,6 @@ interface FormData {
 }
 
 export function CourseSubmissionForm() {
-  const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState<FormData>({
     institutionName: "",
@@ -432,7 +430,7 @@ export function CourseSubmissionForm() {
         description: "Course added successfully!",
         variant: "default",
       });
-      navigate("/add-course")
+      resetForm();
     } catch (err: any) {
       console.error(
         "Error adding course:",
@@ -522,6 +520,23 @@ export function CourseSubmissionForm() {
 
   const updateFormData = (field: keyof FormData, value: any) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const resetForm = () => {
+    setIsSubmitted(false);
+    setCurrentStep(1);
+    setFormData({
+      institutionName: "",
+      institutionType: "",
+      state: "",
+      courseName: "",
+      olevelSubjects: [],
+      jambSubjects: [],
+      compulsoryJambSubjects: [],
+      compulsoryOlevelSubjects: [],
+      contributorName: "",
+      isAnonymous: false,
+    });
   };
 
   if (isSubmitted) {
