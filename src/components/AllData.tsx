@@ -20,6 +20,7 @@ import {
 // UI components - replace or adapt to your design system if needed
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"; // optional
 import { Button } from "@/components/ui/button"; // optional
+import { useNavigate } from "react-router-dom";
 
 type IdName = { id: string; name: string };
 
@@ -52,6 +53,8 @@ export default function AllData() {
 
   const [error, setError] = useState<string | null>(null);
 
+  const navigate = useNavigate();
+
   // load top-level lists
   useEffect(() => {
     const loadTop = async () => {
@@ -61,6 +64,7 @@ export default function AllData() {
           getInstituteTypes(),
           getStates(),
         ]);
+
         // normalize helper
         const normalize = (
           arr: any[],
@@ -83,6 +87,9 @@ export default function AllData() {
         setInstituteTypes(normalize(typesRes.data, ["instType", "name"]));
         setStates(normalize(statesRes.data, ["stateName", "name", "state"]));
       } catch (err) {
+        if (err.response?.status === 403) {
+          navigate('/signin')
+        }
         console.error(err);
         setError("Failed to load institute types / states");
       } finally {
