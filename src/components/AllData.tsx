@@ -61,7 +61,6 @@ export default function AllData() {
           getInstituteTypes(),
           getStates(),
         ]);
-
         // normalize helper
         const normalize = (
           arr: any[],
